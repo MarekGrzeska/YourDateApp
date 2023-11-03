@@ -30,6 +30,9 @@
                         <li class="nav-item">
                             <a class="nav-link @(controller == "Home" && action == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Mój profil</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(controller == "Home" && action == "ProfilesBrowser" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="ProfilesBrowser">Przeglądaj</a>
+                        </li>
                         @if (isLoggedIn == false)
                         {
                             <li class="nav-item">

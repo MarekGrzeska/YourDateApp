@@ -1,0 +1,24 @@
+﻿@model IEnumerable<YourDateApp.Application.Dtos.UserProfileDto>
+
+<div class="text-center">
+    <h1>Przeglądaj profile</h1>
+    <hr />
+    <div class="row mx-auto">
+        @foreach (var item in Model)
+        {
+            <div class="card m-3" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Username</h5>
+                    <img id="profilePhoto" width="150px" height="150px" src="~/@item.PhotoSrc">
+                    <p class="card-text">
+                        Kraj: @item.Country
+                        <br/>
+                        Miasto: @item.City
+                        <br />
+                        Wiek: @item.Age
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+ </div>

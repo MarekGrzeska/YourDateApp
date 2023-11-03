@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using YourDateApp.Application.Commands.UpdateUserProfile;
 using YourDateApp.Application.Dtos;
+using YourDateApp.Application.Queries.GetAllUserProfiles;
 using YourDateApp.Application.Queries.GetUserProfileByUsername;
 
 namespace YourDateApp.Controllers
@@ -23,6 +24,20 @@ namespace YourDateApp.Controllers
             var user = HttpContext.User;
             if (user == null || user.Identity == null) return false;
             return user.Identity.IsAuthenticated;
+        }
+
+        private string GetCurrentUsername()
+        {
+            return HttpContext!.User!.Identity!.Name!;
+        }
+
+        public async Task<IActionResult> ProfilesBrowser()
+        {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
+            var profiles = await _mediator.Send(new GetAllUserProfilesQuery());
+            profiles = profiles.Where(p => p.Username != GetCurrentUsername()).ToList();
+            return View(profiles);
         }
 
         public async Task<IActionResult> Index()

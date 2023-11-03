@@ -30,6 +30,11 @@ namespace YourDateApp.Infrastructure.Repositories
             await Commit();
         }
 
+        public async Task<IEnumerable<User>> GetAll()
+        {
+            return await _dbContext.Users.ToListAsync();
+        }
+
         public async Task Commit()
         {
             await _dbContext.SaveChangesAsync();
