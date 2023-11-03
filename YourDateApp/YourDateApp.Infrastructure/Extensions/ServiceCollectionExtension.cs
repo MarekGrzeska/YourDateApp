@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using YourDateApp.Domain.Interfaces;
 using YourDateApp.Infrastructure.DbProvider;
+using YourDateApp.Infrastructure.Repositories;
 using YourDateApp.Infrastructure.Seeder;
 using YourDateApp.Infrastructure.Services;
 
@@ -15,6 +17,7 @@ namespace YourDateApp.Infrastructure.Extensions
             services.AddDbContext<YourDateDbContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IRandomUserService, RandomUserService>();
             services.AddScoped<IImageProfileService, ImageProfileService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<YourDateAppSeeder>();
         }
     }

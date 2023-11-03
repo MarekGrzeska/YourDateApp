@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using YourDateApp.Application.Commands.RegisterUser;
 using YourDateApp.Application.Dtos;
 
 namespace YourDateApp.Controllers
 {
     public class AccountController : Controller
     {
-        public AccountController()
+        private readonly IMediator _mediator;
+
+        public AccountController(IMediator mediator)
         {
+            _mediator = mediator;
         }
 
         public IActionResult Register()
@@ -27,9 +32,10 @@ namespace YourDateApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterUserDto dto)
+        public async Task<IActionResult> Register(RegisterUserCommand command)
         {
             if (!ModelState.IsValid) return View();
+            await _mediator.Send(command);
             return RedirectToAction("Index", "Home");
         }
 
