@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using YourDateApp.Application.Commands.RegisterUser;
@@ -12,6 +13,12 @@ namespace YourDateApp.Application.Extensions
         {
             services.AddMediatR(typeof(RegisterUserCommand));
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(option =>
+                {
+                    option.LoginPath = "/Account/Login";
+                    option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                });
         }
     }
 }
