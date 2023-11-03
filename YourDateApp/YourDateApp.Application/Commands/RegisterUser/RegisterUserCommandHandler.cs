@@ -20,11 +20,11 @@ namespace YourDateApp.Application.Commands.RegisterUser
         {
             var newUser = new User()
             {
-                Email = request.Email,
-                Username = request.Username,
-                Gender = request.Gender,
+                Email = request.Email!,
+                Username = request.Username!,
+                Gender = request.Gender!,
             };
-            var hashedPassword = _passwordHasher.HashPassword(newUser, request.Password);
+            var hashedPassword = _passwordHasher.HashPassword(newUser, request.Password!);
             newUser.PasswordHash = hashedPassword;
             await _userRepository.RegisterUser(newUser);
             return Unit.Value;

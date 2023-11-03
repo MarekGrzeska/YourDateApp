@@ -1,8 +1,11 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using YourDateApp.Application.Commands.RegisterUser;
+using YourDateApp.Application.Queries.LoginUser;
 using YourDateApp.Domain.Entities;
 
 namespace YourDateApp.Application.Extensions
@@ -19,6 +22,9 @@ namespace YourDateApp.Application.Extensions
                     option.LoginPath = "/Account/Login";
                     option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 });
+            services.AddValidatorsFromAssemblyContaining<LoginUserQueryValidator>()
+                .AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
         }
     }
 }

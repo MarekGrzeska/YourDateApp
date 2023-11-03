@@ -14,9 +14,14 @@ namespace YourDateApp.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<User?> GetUserByEmail(string email)
+        public async Task<User?> GetByEmail(string email)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
+        public async Task<User?> GetByUsername(string username)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
 
         public async Task RegisterUser(User user)

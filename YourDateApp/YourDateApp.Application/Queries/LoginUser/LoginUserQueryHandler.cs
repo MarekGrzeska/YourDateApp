@@ -18,9 +18,9 @@ namespace YourDateApp.Application.Queries.LoginUser
 
         public async Task<User?> Handle(LoginUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByEmail(request.Email);
+            var user = await _userRepository.GetByEmail(request.Email!);
             if (user == null) return null;
-            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
+            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password!);
             if (result == PasswordVerificationResult.Failed) return null;
             return user;
         }
