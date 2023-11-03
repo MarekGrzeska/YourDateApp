@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using YourDateApp.Infrastructure.DbProvider;
+using YourDateApp.Infrastructure.Seeder;
+using YourDateApp.Infrastructure.Services;
 
 namespace YourDateApp.Infrastructure.Extensions
 {
@@ -11,6 +13,9 @@ namespace YourDateApp.Infrastructure.Extensions
         {
             var connectionString = config.GetConnectionString("YourDateAppDb");
             services.AddDbContext<YourDateDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IRandomUserService, RandomUserService>();
+            services.AddScoped<IImageProfileService, ImageProfileService>();
+            services.AddScoped<YourDateAppSeeder>();
         }
     }
 }
