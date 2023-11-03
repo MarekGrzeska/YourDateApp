@@ -24,7 +24,7 @@ namespace YourDateApp.Infrastructure.Services
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Can't download randomusers from API");
+                    throw new Exception("Can't download randomusers from API: " + e.Message);
                 }
             }
             return null;

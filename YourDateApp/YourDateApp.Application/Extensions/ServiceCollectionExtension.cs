@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using YourDateApp.Application.Commands.RegisterUser;
 using YourDateApp.Application.Mappings;
 using YourDateApp.Application.Queries.LoginUser;
+using YourDateApp.Application.Services;
 using YourDateApp.Domain.Entities;
 
 namespace YourDateApp.Application.Extensions
@@ -18,6 +19,7 @@ namespace YourDateApp.Application.Extensions
         {
             services.AddMediatR(typeof(RegisterUserCommand));
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<IProfilePhotoService, ProfilePhotoService>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(option =>
                 {

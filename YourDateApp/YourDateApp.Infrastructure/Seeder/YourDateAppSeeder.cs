@@ -33,15 +33,15 @@ namespace YourDateApp.Infrastructure.Seeder
                 var user = new User
                 {
                     Email = (string)person["email"]!,
-                    Username = (string)person["login"]["username"]!,
+                    Username = (string)person["login"]!["username"]!,
                     Gender = (string)person["gender"]!,
                     Profile = new ProfileInfo()
                     {
-                        FirstName = (string)person["name"]["first"]!,
-                        LastName = (string)person["name"]["last"]!,
-                        Country = (string)person["location"]["country"]!,
-                        City = (string)person["location"]["city"]!,
-                        Age = (int)person["dob"]["age"]!,
+                        FirstName = (string)person["name"]!["first"]!,
+                        LastName = (string)person["name"]!["last"]!,
+                        Country = (string)person["location"]!["country"]!,
+                        City = (string)person["location"]!["city"]!,
+                        Age = (int)person["dob"]!["age"]!,
                         PhotoSrc = photosSrc[i],
                     },
                 };

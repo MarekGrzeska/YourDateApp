@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using YourDateApp.Application.Commands.UpdateUserProfile;
 using YourDateApp.Application.Dtos;
 using YourDateApp.Domain.Entities;
 
@@ -26,6 +27,9 @@ namespace YourDateApp.Application.Mappings
                     City = src.City,
                     Age = src.Age,
                 }));
+
+            CreateMap<UserProfileDto, UpdateUserProfileCommand>();
+            CreateMap<UpdateUserProfileCommand, UserProfileDto>();
         }
     }
 }

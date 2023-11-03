@@ -9,7 +9,7 @@ namespace YourDateApp.Infrastructure.Services
             var photosUrl = new List<string>();
             foreach (var user in randomUsersJSON) 
             {
-                var photoUrl = (string)user["picture"]["large"]!;
+                var photoUrl = (string)user["picture"]!["large"]!;
                 using (HttpClient client = new HttpClient()) 
                 {
                     byte[] image = await client.GetByteArrayAsync(photoUrl);

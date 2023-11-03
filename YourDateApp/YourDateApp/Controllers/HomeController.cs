@@ -1,5 +1,7 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using YourDateApp.Application.Commands.UpdateUserProfile;
 using YourDateApp.Application.Dtos;
 using YourDateApp.Application.Queries.GetUserProfileByUsername;
 
@@ -8,10 +10,12 @@ namespace YourDateApp.Controllers
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public HomeController(IMediator mediator)
+        public HomeController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         private bool IsLoggedIn()
@@ -29,7 +33,16 @@ namespace YourDateApp.Controllers
             var username = HttpContext!.User!.Identity!.Name!;
             dto = await _mediator.Send(new GetUserProfileByUsernameQuery(username));
 
-            return View(dto); ;
+            var updateUserProfileCommand = _mapper.Map<UpdateUserProfileCommand>(dto);
+            return View(updateUserProfileCommand); ;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(UpdateUserProfileCommand command)
+        {
+            if (!ModelState.IsValid) return View(command);
+            await _mediator.Send(command);
+            return RedirectToAction("Index", "Home");
         }
     }
 }
