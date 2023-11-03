@@ -1,0 +1,16 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using YourDateApp.Infrastructure.DbProvider;
+
+namespace YourDateApp.Infrastructure.Extensions
+{
+    public static class ServiceCollectionExtension
+    {
+        public static void AddInfrastructure(this IServiceCollection services, IConfiguration config)
+        {
+            var connectionString = config.GetConnectionString("YourDateAppDb");
+            services.AddDbContext<YourDateDbContext>(options => options.UseSqlServer(connectionString));
+        }
+    }
+}

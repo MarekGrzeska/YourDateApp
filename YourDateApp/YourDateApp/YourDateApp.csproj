@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\YourDateApp.Application\YourDateApp.Application.csproj" />
+    <ProjectReference Include="..\YourDateApp.Infrastructure\YourDateApp.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
