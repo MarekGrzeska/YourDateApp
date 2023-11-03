@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var action = ViewContext.RouteData.Values["Action"]?.ToString();
+    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var isLoggedIn = User.Identity.IsAuthenticated;
+    var username = User.Identity.Name;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,11 +13,12 @@
     <title>@ViewData["Title"] - YourDateApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/YourDateApp.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">YourDateApp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -20,12 +28,27 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link @(controller == "Home" && action == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Mój profil</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (isLoggedIn == false)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Account" && action == "Register" ? "active" : "")" asp-area="" asp-controller="Account" asp-action="Register">Zarejestruj</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Account" && action == "Login" ? "active" : "")" asp-area="" asp-controller="Account" asp-action="Login">Zaloguj</a>
+                            </li>
+                        }
                     </ul>
+                    @if (isLoggedIn == true)
+                    {
+                        <div class="loggedUser">
+                            <form class="form-inline" action="/Account/Logout" method="post">
+                                <span class="navbar-text navUsername">Witaj @username !</span>
+                                <button class="btn btn-success my-2 my-sm-0" type="submit">Wyloguj</button>
+                            </form>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>
@@ -36,10 +59,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - YourDateApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    <footer class="footer text-muted">
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

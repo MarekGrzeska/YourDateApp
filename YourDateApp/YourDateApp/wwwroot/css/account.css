@@ -1,0 +1,30 @@
+﻿html,
+body {
+    height: 100%;
+}
+
+.form-account {
+    margin-top: 100px !important;
+    max-width: 400px;
+    text-align: center;
+}
+
+    .form-account .form-floating:focus-within {
+        z-index: 2;
+    }
+
+    .form-account input {
+        margin-top: -5px;
+        margin-bottom: -5px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+a {
+    text-decoration: none;
+}
+
+.genderSelection {
+    margin-top: 20px;
+    display: inline;
+}

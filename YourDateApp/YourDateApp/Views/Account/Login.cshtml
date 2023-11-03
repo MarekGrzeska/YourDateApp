@@ -1,0 +1,31 @@
+﻿@model YourDateApp.Application.Dtos.LoginDto;
+
+<div class="d-flex  py-4 bg-body">
+    <main class="form-account w-100 m-auto">
+        <form action="/Account/Login" method="post">
+            <h1 class="h3 mb-3 fw-normal">Logowanie</h1>
+
+            <div class="form-floating">
+                <input type="email" class="form-control" id="inputEmail" asp-for="Email">
+                <label for="inputEmail">Adres email</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="inputPassword" asp-for="Password">
+                <label for="inputPassword">Hasło</label>
+            </div>
+            <button class="btn btn-primary w-100 py-2" type="submit">Zaloguj się</button>
+            <br /><br />
+            <div asp-validation-summary="All">
+            </div>
+        </form>
+
+        <a  asp-area="" asp-controller="Account" asp-action="Register">Jeśli nie masz konta, przejdź do rejestracji.</a>
+    </main>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

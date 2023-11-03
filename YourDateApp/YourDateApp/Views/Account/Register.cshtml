@@ -1,0 +1,46 @@
+﻿@model YourDateApp.Application.Dtos.RegisterUserDto;
+
+<div class="d-flex  py-4 bg-body">
+    <main class="form-account w-100 m-auto">
+        <form action="/Account/Register" method="post">
+            <h1 class="h3 mb-3 fw-normal">Zarejestruj się</h1>
+
+            <div class="form-floating">
+                <input type="email" class="form-control" id="inputEmail" asp-for="Email">
+                <label for="inputEmail">Adres email</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="inputUsername" asp-for="Username">
+                <label for="inputUsername">Nazwa użytkownika</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="inputPassword" asp-for="Password">
+                <label for="inputPassword">Hasło</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="inputPassword2" asp-for="Password2">
+                <label for="inputPassword2">Powtórz hasło</label>
+            </div>
+            <div class="genderSelection row">
+                <label class="list-group-item d-flex gap-2">
+                    <input class="form-check-input flex-shrink-0" type="radio" asp-for="Gender" value="Mężczyzna" checked>
+                    <span>Mężczyzna</span>
+                </label>
+                <label class="list-group-item d-flex gap-2">
+                    <input class="form-check-input flex-shrink-0" type="radio" asp-for="Gender" value="Kobieta">
+                    <span>Kobieta</span>
+                </label>
+            </div>
+            <button class="btn btn-primary w-100 py-2" type="submit">Zarejestruj się</button>
+            <br /><br />
+            <div asp-validation-summary="All">
+            </div>
+        </form>
+    </main>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
