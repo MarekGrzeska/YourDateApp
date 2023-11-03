@@ -1,24 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using YourDateApp.Application.Dtos;
+using YourDateApp.Application.Queries.GetUserProfileByUsername;
 
 namespace YourDateApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IMediator _mediator;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IMediator mediator)
         {
-            _logger = logger;
+            _mediator = mediator;
         }
 
-        public IActionResult Index()
+        private bool IsLoggedIn()
         {
-            return View();
+            var user = HttpContext.User;
+            if (user == null || user.Identity == null) return false;
+            return user.Identity.IsAuthenticated;
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            UserProfileDto dto;
+            if (! IsLoggedIn()) return RedirectToAction("Login", "Account");
+
+            var username = HttpContext!.User!.Identity!.Name!;
+            dto = await _mediator.Send(new GetUserProfileByUsernameQuery(username));
+
+            return View(dto); ;
         }
     }
 }

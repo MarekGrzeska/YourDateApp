@@ -1,8 +1,89 @@
-﻿@{
+﻿@model YourDateApp.Application.Dtos.UserProfileDto;
+
+@{
     ViewData["Title"] = "Home Page";
+    string imageSrc = Model.PhotoSrc != null ? Model.PhotoSrc : "images/defaultUserPhoto.png";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>@Model.Username</h1>
+    <hr />
+    <h2>Edytuj swój profil</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <img id="profilePhoto" class="profilePhoto" src="@imageSrc"
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <form enctype="multipart/form-data" asp-action="UpdateProfile" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group" style="display:none">
+                    <label asp-for="Id" class="control-label"></label>
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label">Adres email</label>
+                    <input asp-for="Email" style="disabled" class="form-control" readonly="true" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Username" class="control-label">Nazwa użytkownika</label>
+                    <input asp-for="Username" style="disabled" class=" form-control" readonly="true" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label">Płeć</label>
+                    <input asp-for="Gender" style="disabled" class="form-control" readonly="true" />
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhotoFile" class="control-label">Zdjęcie</label>
+                    <input asp-for="PhotoFile" id="PhotoFileInput" class="form-control" type="file" accept="image/jpeg, image/png, image/jpg" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label">Imię</label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label">Nazwisko</label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Country" class="control-label">Kraj</label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="City" class="control-label">Miasto</label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Age" class="control-label">Wiek</label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Zapisz" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script>
+    let photoPicker = document.getElementById("PhotoFileInput")
+    photoPicker.addEventListener("change", (e) => {
+        let photoFile = e.target.files[0];
+        if (photoFile) {
+            let profilePhoto = document.getElementById("profilePhoto")
+            profilePhoto.src = URL.createObjectURL(photoFile);
+        }
+    });
+</script>
