@@ -1,0 +1,21 @@
+﻿@model YourDateApp.Application.Dtos.UserProfileDto
+
+<h1>@Model.Username</h1>
+<hr/>
+<div class="row">
+    <div class="col-sm-3">
+        <h3>Imię: @Model.FirstName</h3>
+        <h3>Nazwisko: @Model.LastName</h3>
+        <h3>Wiek: @Model.Age</h3>
+        <h3>Kraj: @Model.Country</h3>
+        <h3>Miasto: @Model.City</h3>
+        <br/>
+        <hr/>
+        <button class="btn-primary">Wyślij wiadomość do @Model.Username</button>
+        <button class="btn-warning">Wyślij polubienie do @Model.Username</button>
+        <a class="btn btn-secondary" asp-controller="Home" asp-action="ProfilesBrowser">Powrót do listy profili</a>
+    </div>
+    <div class="col-sm-6">
+        <img id="profilePhoto" width="350px" height="450px" src="~/@Model.PhotoSrc">
+    </div>
+</div>

@@ -27,12 +27,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link @(controller == "Home" && action == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Mój profil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(controller == "Home" && action == "ProfilesBrowser" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="ProfilesBrowser">Przeglądaj</a>
-                        </li>
+                        @if (isLoggedIn == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Home" && action == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Mój profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Home" && action == "ProfilesBrowser" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="ProfilesBrowser">Przeglądaj</a>
+                            </li>
+                        }
                         @if (isLoggedIn == false)
                         {
                             <li class="nav-item">

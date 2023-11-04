@@ -40,6 +40,15 @@ namespace YourDateApp.Controllers
             return View(profiles);
         }
 
+        [Route("Home/Profile/{username}")]
+        public async Task<IActionResult> Profile(string username)
+        {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
+            var dto = await _mediator.Send(new GetUserProfileByUsernameQuery(username));
+            return View(dto);
+        }
+
         public async Task<IActionResult> Index()
         {
             UserProfileDto dto;
