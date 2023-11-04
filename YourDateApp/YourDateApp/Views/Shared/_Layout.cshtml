@@ -1,8 +1,13 @@
-﻿@{
+﻿@using Newtonsoft.Json;
+@using YourDateApp.Models;
+@{
     var action = ViewContext.RouteData.Values["Action"]?.ToString();
     var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
-    var isLoggedIn = User.Identity.IsAuthenticated;
+    var isLoggedIn = User!.Identity!.IsAuthenticated;
     var username = User.Identity.Name;
+    var notyfication = TempData["Notyfication"] != null ?
+    (Notyfication)JsonConvert.DeserializeObject<Notyfication>(TempData["Notyfication"]!.ToString()!)! 
+    : null;
 }
 
 <!DOCTYPE html>
@@ -15,6 +20,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/YourDateApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.css"/>
 </head>
 <body>
     <header>
@@ -70,6 +76,13 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+    @if(notyfication != null)
+    {
+        <script>
+            toastr["@notyfication.Type"]("@notyfication.Message")
+        </script>
+    }
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

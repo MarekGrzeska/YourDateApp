@@ -5,6 +5,7 @@ using YourDateApp.Application.Commands.UpdateUserProfile;
 using YourDateApp.Application.Dtos;
 using YourDateApp.Application.Queries.GetAllUserProfiles;
 using YourDateApp.Application.Queries.GetUserProfileByUsername;
+using YourDateApp.Extension;
 
 namespace YourDateApp.Controllers
 {
@@ -56,6 +57,7 @@ namespace YourDateApp.Controllers
 
             var username = HttpContext!.User!.Identity!.Name!;
             dto = await _mediator.Send(new GetUserProfileByUsernameQuery(username));
+            if (dto == null) return RedirectToAction("Login", "Account");
 
             var updateUserProfileCommand = _mapper.Map<UpdateUserProfileCommand>(dto);
             return View(updateUserProfileCommand); ;
@@ -64,8 +66,16 @@ namespace YourDateApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(UpdateUserProfileCommand command)
         {
-            if (!ModelState.IsValid) return View(command);
+            if (!ModelState.IsValid)
+            {
+                this.SetNotyfication("Błąd aktualizacji profilu", "error");
+                var dto = await _mediator.Send(new GetUserProfileByUsernameQuery(command.Username));
+                command.PhotoSrc = dto.PhotoSrc;
+                return View(command);
+            }
+
             await _mediator.Send(command);
+            this.SetNotyfication("Zaktualizowano profil", "info");
             return RedirectToAction("Index", "Home");
         }
     }

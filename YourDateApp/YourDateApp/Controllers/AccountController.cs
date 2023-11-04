@@ -6,6 +6,8 @@ using System.Security.Claims;
 using YourDateApp.Application.Commands.RegisterUser;
 using YourDateApp.Application.Dtos;
 using YourDateApp.Application.Queries.LoginUser;
+using YourDateApp.Extension;
+using YourDateApp.Models;
 
 namespace YourDateApp.Controllers
 {
@@ -31,14 +33,21 @@ namespace YourDateApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+            this.SetNotyfication("Wylogowano", "info");
             return RedirectToAction("Login", "Account"); ;
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUserCommand command)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid)
+            {
+                this.SetNotyfication("Błąd rejestracji", "error");
+                return View();
+            }
+
             await _mediator.Send(command);
+            this.SetNotyfication($"Zarejestrowano użytkownika {command.Username}", "info");
             await LoginUser(new LoginUserQuery { Email = command.Email, Password = command.Password });
             return RedirectToAction("Index", "Home");
         }
@@ -46,10 +55,15 @@ namespace YourDateApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginUserQuery query)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) 
+            {
+                this.SetNotyfication("Niepoprawny email lub hasło", "error");
+                return View();
+            } 
             var loginResult = await LoginUser(query);
             if (!loginResult) return View();
 
+            this.SetNotyfication("Zalogowano", "info");
             return RedirectToAction("Index", "Home");
         }
 
