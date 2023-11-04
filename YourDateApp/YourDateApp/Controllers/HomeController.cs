@@ -20,31 +20,19 @@ namespace YourDateApp.Controllers
             _mapper = mapper;
         }
 
-        private bool IsLoggedIn()
-        {
-            var user = HttpContext.User;
-            if (user == null || user.Identity == null) return false;
-            return user.Identity.IsAuthenticated;
-        }
-
-        private string GetCurrentUsername()
-        {
-            return HttpContext!.User!.Identity!.Name!;
-        }
-
         public async Task<IActionResult> ProfilesBrowser()
         {
-            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+            if (!this.IsLoggedIn()) return RedirectToAction("Login", "Account");
 
             var profiles = await _mediator.Send(new GetAllUserProfilesQuery());
-            profiles = profiles.Where(p => p.Username != GetCurrentUsername()).ToList();
+            profiles = profiles.Where(p => p.Username != this.GetCurrentUsername()).ToList();
             return View(profiles);
         }
 
         [Route("Home/Profile/{username}")]
         public async Task<IActionResult> Profile(string username)
         {
-            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+            if (!this.IsLoggedIn()) return RedirectToAction("Login", "Account");
 
             var dto = await _mediator.Send(new GetUserProfileByUsernameQuery(username));
             return View(dto);
@@ -53,7 +41,7 @@ namespace YourDateApp.Controllers
         public async Task<IActionResult> Index()
         {
             UserProfileDto dto;
-            if (! IsLoggedIn()) return RedirectToAction("Login", "Account");
+            if (! this.IsLoggedIn()) return RedirectToAction("Login", "Account");
 
             var username = HttpContext!.User!.Identity!.Name!;
             dto = await _mediator.Send(new GetUserProfileByUsernameQuery(username));

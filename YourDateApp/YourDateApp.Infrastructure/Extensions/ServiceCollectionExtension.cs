@@ -18,6 +18,7 @@ namespace YourDateApp.Infrastructure.Extensions
             services.AddScoped<IRandomUserService, RandomUserService>();
             services.AddScoped<IImageProfileService, ImageProfileService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<YourDateAppSeeder>();
         }
     }

@@ -12,7 +12,11 @@
         <br/>
         <hr/>
         <button class="btn-primary">Wyślij wiadomość do @Model.Username</button>
-        <button class="btn-warning">Wyślij polubienie do @Model.Username</button>
+        <form method="post" asp-action="SendLike" asp-controller="Interaction" >
+            <input type="hidden" name="username" value="@Model.Username" />
+            <button type="submit" class="btn btn-warning">Wyślij polubienie do @Model.Username</button>
+        </form>
+
         <a class="btn btn-secondary" asp-controller="Home" asp-action="ProfilesBrowser">Powrót do listy profili</a>
     </div>
     <div class="col-sm-6">
