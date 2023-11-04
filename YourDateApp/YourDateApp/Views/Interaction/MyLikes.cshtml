@@ -1,0 +1,71 @@
+﻿@model YourDateApp.Application.Dtos.UserLikesDto
+
+<div class="row">
+    @if (Model.ReceivedLikes == null || Model.ReceivedLikes.Count == 0)
+    {
+        <h2>Nie otrzymałeś jeszcze żadnych polubień</h2>
+    }
+    else
+    {
+        <h2>Otrzymałeś polubienia od:</h2>
+        <hr/>
+        <table style="width: 25%">
+            @foreach (var like in Model.ReceivedLikes)
+            {
+                var currentDate = DateTime.Now;
+                var different = currentDate - like.SentDate;
+                var timeString = "";
+                if (different.TotalDays > 1.0)
+                    timeString = $"{(int)different.TotalDays} dni temu";
+                else if (different.TotalHours > 1.0)
+                    timeString = $"{(int)different.TotalHours} godzin temu";
+                else if (different.TotalMinutes > 1.0)
+                    timeString = $"{(int)different.TotalMinutes} minut temu";
+                else timeString = "Przed chwilą";
+                <tr>
+                    <td style="padding: 10px; text-align: left;">@timeString</td>
+                    <td style="padding: 10px; text-align: left;">
+                        <a asp-controller="Home" asp-action="Profile" asp-route-id="@like.UsernameFrom">
+                            @like.UsernameFrom
+                        </a>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    <hr/>
+    <br/>
+    <br/>
+    @if (Model.SendedLikes == null || Model.SendedLikes.Count == 0)
+    {
+        <h2>Nie wysłałeś jeszcze żadnych polubień</h2>
+    }
+    else
+    {
+        <h2>Wysłałeś polubienia do: </h2>
+        <hr />
+        <table style="width: 25%">
+            @foreach (var like in Model.SendedLikes)
+            {
+                var currentDate = DateTime.Now;
+                var different = currentDate - like.SentDate;
+                var timeString = "";
+                if (different.TotalDays > 1.0)
+                    timeString = $"{(int)different.TotalDays} dni temu";
+                else if (different.TotalHours > 1.0)
+                    timeString = $"{(int)different.TotalHours} godzin temu";
+                else if (different.TotalMinutes > 1.0)
+                    timeString = $"{(int)different.TotalMinutes} minut temu";
+                else timeString = "Przed chwilą";
+                <tr>
+                    <td style="padding: 10px; text-align: left;">@timeString</td>
+                    <td style="padding: 10px; text-align: left;">
+                        <a asp-controller="Home" asp-action="Profile" asp-route-id="@like.UsernameTo">
+                            @like.UsernameTo
+                        </a>
+                    </td>
+                </tr>
+            }
+        </table>
+    }   
+</div>

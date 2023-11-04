@@ -2,6 +2,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using YourDateApp.Application.Commands.SendLike;
+using YourDateApp.Application.Commands.SetLikesReceived;
+using YourDateApp.Application.Queries.GetAllLikesForUsername;
 using YourDateApp.Extension;
 
 namespace YourDateApp.Controllers
@@ -15,6 +17,19 @@ namespace YourDateApp.Controllers
         {
             _mediator = mediator;
             _mapper = mapper;
+        }
+
+        public async Task<IActionResult> MyLikes()
+        {
+            if (!this.IsLoggedIn()) return RedirectToAction("Login", "Account");
+            var currentUsername = this.GetCurrentUsername();
+            var myLikes = await _mediator.Send(new GetAllLikesForUsernameQuery(currentUsername));
+            if (myLikes.ReceivedLikes != null && myLikes.ReceivedLikes.Count > 0 &&
+                myLikes.ReceivedLikes.Any(l => l.IsReceived == false))
+            {
+                await _mediator.Send(new SetLikesReceivedCommand(currentUsername));
+            }
+            return View(myLikes);
         }
 
         [HttpPost]
