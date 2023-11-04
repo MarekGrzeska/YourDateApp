@@ -6,6 +6,7 @@ namespace YourDateApp.Infrastructure.DbProvider
     public class YourDateDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         public YourDateDbContext(DbContextOptions<YourDateDbContext> options) : base(options) { }
 
@@ -14,6 +15,8 @@ namespace YourDateApp.Infrastructure.DbProvider
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>()
                 .OwnsOne(u => u.Profile);
+
+            modelBuilder.Entity<Like>();
         }
     }
 }
