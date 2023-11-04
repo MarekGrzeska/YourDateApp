@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using YourDateApp.Application.Commands.SendLike;
 using YourDateApp.Application.Commands.SetLikesReceived;
 using YourDateApp.Application.Queries.GetAllLikesForUsername;
+using YourDateApp.Application.Queries.GetUnreceivedLikesCount;
 using YourDateApp.Extension;
 
 namespace YourDateApp.Controllers
@@ -45,6 +46,17 @@ namespace YourDateApp.Controllers
             this.SetNotyfication($"Wysłano polubienie do {username}", "info");
 
             return RedirectToAction($"Profile", "Home", new { username = username });
+        }
+
+        [HttpGet]
+        [Route("Interaction/UnreceivedLikeCount/{username}")]
+        public async Task<IActionResult> UnreceivedLikeCount(string username)
+        {
+            if (!this.IsLoggedIn())
+                return Unauthorized();
+
+            var unreceivedLikeCount = await _mediator.Send(new GetUnreceivedLikesCountQuery(username));
+            return Ok(unreceivedLikeCount);
         }
     }
 }

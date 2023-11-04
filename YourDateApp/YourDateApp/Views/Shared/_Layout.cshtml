@@ -42,7 +42,7 @@
                                 <a class="nav-link @(controller == "Home" && action == "ProfilesBrowser" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="ProfilesBrowser">Przeglądaj</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link @(controller == "Interaction" && action == "MyLikes" ? "active" : "")" asp-area="" asp-controller="Interaction" asp-action="MyLikes">Polubienia</a>
+                                <a id="likesNavLink" class="nav-link @(controller == "Interaction" && action == "MyLikes" ? "active" : "")" asp-area="" asp-controller="Interaction" asp-action="MyLikes">Polubienia</a>
                             </li>
                         }
                         @if (isLoggedIn == false)
@@ -87,5 +87,30 @@
         </script>
     }
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        const UpdateUnreceivedLikeNumber = () => {
+            let username = '@username';
+            let url = `/Interaction/UnreceivedLikeCount/${username}`;
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: (data) => {
+                    let likeNumber = data;
+                    let element = document.getElementById("likesNavLink");
+                    if (likeNumber > 0) {
+                        element.innerHTML = `Polubienia (${likeNumber} nowe)`;
+                    }
+                    else {
+                        element.innerHTML = 'Polubienia';
+                    }
+                }
+            })
+        }
+        UpdateUnreceivedLikeNumber();
+        setInterval(() => UpdateUnreceivedLikeNumber(), 5000);
+    </script>
+
 </body>
 </html>
