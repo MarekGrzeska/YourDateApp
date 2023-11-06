@@ -7,6 +7,8 @@ namespace YourDateApp.Infrastructure.DbProvider
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public YourDateDbContext(DbContextOptions<YourDateDbContext> options) : base(options) { }
 
@@ -17,6 +19,10 @@ namespace YourDateApp.Infrastructure.DbProvider
                 .OwnsOne(u => u.Profile);
 
             modelBuilder.Entity<Like>();
+            modelBuilder.Entity<Chat>()
+                .HasMany(c => c.Messages)
+                .WithOne(m => m.Chat)
+                .HasForeignKey(ms => ms.ChatId);
         }
     }
 }

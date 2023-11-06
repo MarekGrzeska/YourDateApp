@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YourDateApp.Infrastructure.DbProvider;
 
@@ -11,9 +12,11 @@ using YourDateApp.Infrastructure.DbProvider;
 namespace YourDateApp.Infrastructure.Migrations
 {
     [DbContext(typeof(YourDateDbContext))]
-    partial class YourDateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231106170437_addChatsAndMessages")]
+    partial class addChatsAndMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace YourDateApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chats");
+                    b.ToTable("Chat");
                 });
 
             modelBuilder.Entity("YourDateApp.Domain.Entities.Like", b =>
@@ -81,10 +84,6 @@ namespace YourDateApp.Infrastructure.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsReceived")
                         .HasColumnType("bit");
 
@@ -103,7 +102,7 @@ namespace YourDateApp.Infrastructure.Migrations
 
                     b.HasIndex("ChatId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("YourDateApp.Domain.Entities.User", b =>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YourDateApp.Infrastructure.DbProvider;
 
@@ -11,9 +12,11 @@ using YourDateApp.Infrastructure.DbProvider;
 namespace YourDateApp.Infrastructure.Migrations
 {
     [DbContext(typeof(YourDateDbContext))]
-    partial class YourDateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231106175123_addContentToMessage")]
+    partial class addContentToMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
