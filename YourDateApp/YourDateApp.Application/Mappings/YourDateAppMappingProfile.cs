@@ -32,6 +32,8 @@ namespace YourDateApp.Application.Mappings
             CreateMap<UpdateUserProfileCommand, UserProfileDto>();
             CreateMap<LikeDto, Like>();
             CreateMap<Like, LikeDto>();
+            CreateMap<MessageDto, Message>();
+            CreateMap<Message, MessageDto>();
         }
     }
 }

@@ -2,8 +2,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using YourDateApp.Application.Commands.SendLike;
+using YourDateApp.Application.Commands.SendMessage;
 using YourDateApp.Application.Commands.SetLikesReceived;
+using YourDateApp.Application.Dtos;
 using YourDateApp.Application.Queries.GetAllLikesForUsername;
+using YourDateApp.Application.Queries.GetAllMessages;
 using YourDateApp.Application.Queries.GetUnreceivedLikesCount;
 using YourDateApp.Extension;
 
@@ -33,6 +36,11 @@ namespace YourDateApp.Controllers
             return View(myLikes);
         }
 
+        public async Task<IActionResult> Chat()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> SendLike(string username)
         {
@@ -57,6 +65,28 @@ namespace YourDateApp.Controllers
 
             var unreceivedLikeCount = await _mediator.Send(new GetUnreceivedLikesCountQuery(username));
             return Ok(unreceivedLikeCount);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(MessageDto messageDto)
+        {
+            if (!this.IsLoggedIn())
+                return Unauthorized();
+
+            await _mediator.Send(new SendMessageCommand(messageDto));
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllMessage(GetMessagesDto getMessagesDto)
+        {
+            if (!this.IsLoggedIn())
+                return Unauthorized();
+
+            var messages = await _mediator
+                .Send(new GetAllMessagesQuery(getMessagesDto.UsernameFrom, getMessagesDto.UsernameTo));
+
+            return Ok(messages);
         }
     }
 }
