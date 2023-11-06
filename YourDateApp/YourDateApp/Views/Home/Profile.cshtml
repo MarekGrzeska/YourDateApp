@@ -11,7 +11,7 @@
         <h3>Miasto: @Model.City</h3>
         <br/>
         <hr/>
-        <button class="btn-primary">Wyślij wiadomość do @Model.Username</button>
+        <button id="startChatBtn" class="btn-primary">Wyślij wiadomość do @Model.Username</button>
         <form method="post" asp-action="SendLike" asp-controller="Interaction" >
             <input type="hidden" name="username" value="@Model.Username" />
             <button type="submit" class="btn btn-warning">Wyślij polubienie do @Model.Username</button>
@@ -23,3 +23,13 @@
         <img id="profilePhoto" width="350px" height="450px" src="~/@Model.PhotoSrc">
     </div>
 </div>
+
+<script>
+    const startChatBtn = document.querySelector("#startChatBtn");
+    const currentUsername = '@User.Identity.Name';
+    const msgToUsername = '@Model.Username';
+
+    startChatBtn.addEventListener("click", () => {
+        startChat(currentUsername, msgToUsername);
+    })
+</script>

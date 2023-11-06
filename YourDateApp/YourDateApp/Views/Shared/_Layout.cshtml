@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/messenger.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/YourDateApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/toastr.js/toastr.css"/>
 </head>
@@ -43,6 +44,9 @@
                             </li>
                             <li class="nav-item">
                                 <a id="likesNavLink" class="nav-link @(controller == "Interaction" && action == "MyLikes" ? "active" : "")" asp-area="" asp-controller="Interaction" asp-action="MyLikes">Polubienia</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="likesNavLink" class="nav-link @(controller == "Interaction" && action == "Chat" ? "active" : "")" asp-area="" asp-controller="Interaction" asp-action="Chat">Wiadomości</a>
                             </li>
                         }
                         @if (isLoggedIn == false)
@@ -76,10 +80,29 @@
 
     <footer class="footer text-muted">
     </footer>
+
+    <div class="chat-container chat" style="display: none">
+        <div class="chat-header">
+            <div id="chatTitle" class="title"></div>
+            <button class="btn btn-success closeChatBtn">X</button>
+        </div>
+        <div class="chat-body">
+        </div>
+        <div class="chat-input">
+            <div class="input-sec">
+                <input type="text" id="chatInput" autofocus placeholder="Napisz wiadomość..." />
+            </div>
+            <div class="send">
+                <button id="sendBtn" class="btn btn-primary">Wyślij</button>
+            </div>
+        </div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/toastr.js/toastr.min.js"></script>
+    <script src="~/js/chat.js" asp-append-version="true"></script>
     @if(notyfication != null)
     {
         <script>
