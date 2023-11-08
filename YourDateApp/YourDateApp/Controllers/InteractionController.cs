@@ -5,9 +5,11 @@ using YourDateApp.Application.Commands.SendLike;
 using YourDateApp.Application.Commands.SendMessage;
 using YourDateApp.Application.Commands.SetLikesReceived;
 using YourDateApp.Application.Commands.SetMessagesReceived;
+using YourDateApp.Application.Commands.SetNewMessagesReceived;
 using YourDateApp.Application.Dtos;
 using YourDateApp.Application.Queries.GetAllLikesForUsername;
 using YourDateApp.Application.Queries.GetAllMessages;
+using YourDateApp.Application.Queries.GetNewMessages;
 using YourDateApp.Application.Queries.GetUnreceivedLikesCount;
 using YourDateApp.Extension;
 
@@ -94,7 +96,19 @@ namespace YourDateApp.Controllers
                 await _mediator.Send(new SetMessagesReceivedCommand(getMessagesDto.UsernameTo,
                     getMessagesDto.UsernameFrom));
             }
+            return Ok(messages);
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> GetNewMessages(GetMessagesDto getMessagesDto)
+        {
+            if (!this.IsLoggedIn())
+                return Unauthorized();
+
+            var messages = await _mediator
+                .Send(new GetNewMessagesQuery(getMessagesDto.UsernameFrom, getMessagesDto.UsernameTo));
+            await _mediator
+                .Send(new SetNewMessagesReceivedCommand(getMessagesDto.UsernameFrom, getMessagesDto.UsernameTo));
             return Ok(messages);
         }
     }

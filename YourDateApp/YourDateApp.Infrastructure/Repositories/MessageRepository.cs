@@ -14,16 +14,27 @@ namespace YourDateApp.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task Commit()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task AddMessage(Message message)
         {
             await _dbContext.Messages.AddAsync(message);
-            await _dbContext.SaveChangesAsync();
+            await Commit();
         }
 
         public async Task<List<Message>> GetAllMessagesForChatId(int chatId)
         {
             return await _dbContext.Messages.Where(m => m.ChatId == chatId)
                 .OrderBy(msg => msg.SentDate).ToListAsync();
+        }
+
+        public async Task<List<Message>> GetNewMessages(string usernameFrom, string usernameTo)
+        {
+            return await _dbContext.Messages.Where(m => m.UsernameFrom == usernameFrom 
+            && m.UsernameTo == usernameTo && m.IsReceived == false).ToListAsync();
         }
 
         public async Task SetMessageReceived(string usernameFrom, string usernameTo)
@@ -35,7 +46,7 @@ namespace YourDateApp.Infrastructure.Repositories
             {
                 message.IsReceived = true;
             }
-            await _dbContext.SaveChangesAsync();
+            await Commit();
         }
     }
 }

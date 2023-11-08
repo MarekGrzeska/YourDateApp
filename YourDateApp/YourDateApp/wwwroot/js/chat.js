@@ -8,16 +8,20 @@ const chatTitle = document.querySelector("#chatTitle");
 let chatCurrentUsername = "";
 let chatUsernameWith = "";
 
+let intervalGetNewMessagesTask;
+
 const startChat = (usernameFrom, usernameTo) => {
     chatCurrentUsername = usernameFrom;
     chatUsernameWith = usernameTo;
     chatTitle.innerHTML = `Chat z ${chatUsernameWith}`;
     chatContainer.setAttribute("style", "display: ");
     getAllMessageFromApi();
+    intervalGetNewMessagesTask = setInterval(() => getNewMessagesFromApi(), 1000);
 }
 
 closeBtn.addEventListener("click", () => {
     chatBody.replaceChildren();
+    clearInterval(intervalGetNewMessagesTask);
     chatContainer.setAttribute("style", "display: none")
 })
 
@@ -54,6 +58,23 @@ const getAllMessageFromApi = () => {
     const getMsg = {
         UsernameFrom: chatCurrentUsername,
         UsernameTo: chatUsernameWith
+    }
+    $.ajax({
+        url: url,
+        type: 'get',
+        data: getMsg,
+        dataType: "json",
+        success: (data) => {
+            addMessagesToChat(data);
+        }
+    })
+}
+
+const getNewMessagesFromApi = () => {
+    const url = '/Interaction/GetNewMessages'
+    const getMsg = {
+        UsernameFrom: chatUsernameWith,
+        UsernameTo: chatCurrentUsername
     }
     $.ajax({
         url: url,
