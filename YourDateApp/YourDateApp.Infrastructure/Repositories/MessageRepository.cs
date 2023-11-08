@@ -48,5 +48,11 @@ namespace YourDateApp.Infrastructure.Repositories
             }
             await Commit();
         }
+
+        public async Task<int> GetAllNewMessagesCount(string username)
+        {
+            return await _dbContext.Messages
+                .CountAsync(m => m.UsernameTo == username && m.IsReceived == false);
+        }
     }
 }

@@ -46,7 +46,7 @@
                                 <a id="likesNavLink" class="nav-link @(controller == "Interaction" && action == "MyLikes" ? "active" : "")" asp-area="" asp-controller="Interaction" asp-action="MyLikes">Polubienia</a>
                             </li>
                             <li class="nav-item">
-                                <a id="likesNavLink" class="nav-link @(controller == "Interaction" && action == "Chat" ? "active" : "")" asp-area="" asp-controller="Interaction" asp-action="Chat">Wiadomości</a>
+                                <a id="messagesNavLink" class="nav-link @(controller == "Interaction" && action == "Chat" ? "active" : "")" asp-area="" asp-controller="Interaction" asp-action="Chat">Wiadomości</a>
                             </li>
                         }
                         @if (isLoggedIn == false)
@@ -131,8 +131,31 @@
                 }
             })
         }
+
+        const UpdateUnreceivedMessages = () => {
+            let username = '@username';
+            let url = `/Interaction/GetAllNewMessagesCount/${username}`;
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: (data) => {
+                    let msgNumber = data;
+                    let element = document.getElementById("messagesNavLink");
+                    if (msgNumber > 0) {
+                        element.innerHTML = `Wiadomości (${msgNumber} nowe)`;
+                    }
+                    else {
+                        element.innerHTML = 'Wiadomości';
+                    }
+                }
+            })
+        }
+
         UpdateUnreceivedLikeNumber();
+        UpdateUnreceivedMessages();
         setInterval(() => UpdateUnreceivedLikeNumber(), 5000);
+        setInterval(() => UpdateUnreceivedMessages(), 5000);
     </script>
 
 </body>

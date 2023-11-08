@@ -10,6 +10,7 @@ using YourDateApp.Application.Dtos;
 using YourDateApp.Application.Queries.GetAllChatByUsername;
 using YourDateApp.Application.Queries.GetAllLikesForUsername;
 using YourDateApp.Application.Queries.GetAllMessages;
+using YourDateApp.Application.Queries.GetAllNewMessagesCount;
 using YourDateApp.Application.Queries.GetNewMessages;
 using YourDateApp.Application.Queries.GetUnreceivedLikesCount;
 using YourDateApp.Extension;
@@ -115,6 +116,17 @@ namespace YourDateApp.Controllers
             await _mediator
                 .Send(new SetNewMessagesReceivedCommand(getMessagesDto.UsernameFrom, getMessagesDto.UsernameTo));
             return Ok(messages);
+        }
+
+        [HttpGet]
+        [Route("Interaction/GetAllNewMessagesCount/{username}")]
+        public async Task<IActionResult> GetAllNewMessagesCount(string username)
+        {
+            if (!this.IsLoggedIn())
+                return Unauthorized();
+
+            var unreceivedMessageCount = await _mediator.Send(new GetAllNewMessagesCountQuery(username));
+            return Ok(unreceivedMessageCount);
         }
     }
 }
