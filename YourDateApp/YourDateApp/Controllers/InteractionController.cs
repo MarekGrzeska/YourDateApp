@@ -7,6 +7,7 @@ using YourDateApp.Application.Commands.SetLikesReceived;
 using YourDateApp.Application.Commands.SetMessagesReceived;
 using YourDateApp.Application.Commands.SetNewMessagesReceived;
 using YourDateApp.Application.Dtos;
+using YourDateApp.Application.Queries.GetAllChatByUsername;
 using YourDateApp.Application.Queries.GetAllLikesForUsername;
 using YourDateApp.Application.Queries.GetAllMessages;
 using YourDateApp.Application.Queries.GetNewMessages;
@@ -41,7 +42,11 @@ namespace YourDateApp.Controllers
 
         public async Task<IActionResult> Chat()
         {
-            return View();
+            if (!this.IsLoggedIn()) return RedirectToAction("Login", "Account");
+            var currentUsername = this.GetCurrentUsername();
+            var myChats = await _mediator.Send(new GetAllChatByUsernameQuery(currentUsername));
+            
+            return View(myChats);
         }
 
         [HttpPost]

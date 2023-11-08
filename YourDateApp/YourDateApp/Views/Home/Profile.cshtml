@@ -1,5 +1,9 @@
 ﻿@model YourDateApp.Application.Dtos.UserProfileDto
 
+@{
+    var photoSrc = Model.PhotoSrc != null ? Model.PhotoSrc : "images/defaultUserPhoto.png";
+}
+
 <h1>@Model.Username</h1>
 <hr/>
 <div class="row">
@@ -9,27 +13,23 @@
         <h3>Wiek: @Model.Age</h3>
         <h3>Kraj: @Model.Country</h3>
         <h3>Miasto: @Model.City</h3>
-        <br/>
-        <hr/>
-        <button id="startChatBtn" class="btn-primary">Wyślij wiadomość do @Model.Username</button>
-        <form method="post" asp-action="SendLike" asp-controller="Interaction" >
-            <input type="hidden" name="username" value="@Model.Username" />
-            <button type="submit" class="btn btn-warning">Wyślij polubienie do @Model.Username</button>
-        </form>
-
-        <a class="btn btn-secondary" asp-controller="Home" asp-action="ProfilesBrowser">Powrót do listy profili</a>
     </div>
     <div class="col-sm-6">
-        <img id="profilePhoto" width="350px" height="450px" src="~/@Model.PhotoSrc">
+        <img id="profilePhoto" width="350px" height="450px" src="~/@photoSrc">
+    </div>
+
+    <div class="row" style="margin-top:20px">
+        <div class="col-sm-4">
+            <a class="btn btn-primary" onclick="startChat('@User.Identity.Name', '@Model.Username')">Wyślij wiadomość do @Model.Username</a>
+        </div>
+        <div class="col-sm-4">
+            <form method="post" asp-action="SendLike" asp-controller="Interaction">
+                <input type="hidden" name="username" value="@Model.Username" />
+                <button type="submit" class="btn btn-warning">Wyślij polubienie do @Model.Username</button>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <a class="btn btn-secondary" asp-controller="Home" asp-action="ProfilesBrowser">Powrót do listy profili</a>
+        </div>
     </div>
 </div>
-
-<script>
-    const startChatBtn = document.querySelector("#startChatBtn");
-    const currentUsername = '@User.Identity.Name';
-    const msgToUsername = '@Model.Username';
-
-    startChatBtn.addEventListener("click", () => {
-        startChat(currentUsername, msgToUsername);
-    })
-</script>

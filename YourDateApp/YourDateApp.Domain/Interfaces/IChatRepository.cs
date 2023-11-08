@@ -6,5 +6,6 @@ namespace YourDateApp.Domain.Interfaces
     {
         Task AddChat(Chat chat);
         Task<Chat?> FindChatWithUsers(string username1, string username2);
+        Task<List<Chat>> GetAllChats(string username);
     }
 }

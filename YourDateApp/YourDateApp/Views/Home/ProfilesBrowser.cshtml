@@ -6,12 +6,14 @@
     <div class="row mx-auto">
         @foreach (var item in Model)
         {
+            var photoSrc = item.PhotoSrc != null ? item.PhotoSrc : "images/defaultUserPhoto.png";
+
             <div class="card m-3" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">
                         <a asp-controller="Home" asp-action="Profile" asp-route-id="@item.Username">@item.Username</a>
                     </h5>
-                    <img id="profilePhoto" width="150px" height="150px" src="~/@item.PhotoSrc">
+                    <img id="profilePhoto" width="150px" height="150px" src="~/@photoSrc">
                     <p class="card-text">
                         Kraj: @item.Country
                         <br/>

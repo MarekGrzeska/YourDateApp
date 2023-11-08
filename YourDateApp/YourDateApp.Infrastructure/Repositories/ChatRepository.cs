@@ -27,5 +27,11 @@ namespace YourDateApp.Infrastructure.Repositories
             (c.Username1 == username2 && c.Username2 == username1));
             return chat;
         }
+
+        public async Task<List<Chat>> GetAllChats(string username)
+        {
+            return await _dbContext.Chats
+                .Where(c => c.Username1 == username || c.Username2 == username).ToListAsync();
+        }
     }
 }
