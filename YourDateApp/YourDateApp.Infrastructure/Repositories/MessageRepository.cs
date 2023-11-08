@@ -25,5 +25,17 @@ namespace YourDateApp.Infrastructure.Repositories
             return await _dbContext.Messages.Where(m => m.ChatId == chatId)
                 .OrderBy(msg => msg.SentDate).ToListAsync();
         }
+
+        public async Task SetMessageReceived(string usernameFrom, string usernameTo)
+        {
+            var messages = await _dbContext.Messages.Where(m => m.UsernameFrom == usernameFrom
+            && m.UsernameTo == usernameTo && m.IsReceived == false).ToListAsync();
+
+            foreach (var message in messages) 
+            {
+                message.IsReceived = true;
+            }
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

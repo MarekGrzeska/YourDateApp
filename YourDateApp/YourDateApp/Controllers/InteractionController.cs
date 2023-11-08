@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using YourDateApp.Application.Commands.SendLike;
 using YourDateApp.Application.Commands.SendMessage;
 using YourDateApp.Application.Commands.SetLikesReceived;
+using YourDateApp.Application.Commands.SetMessagesReceived;
 using YourDateApp.Application.Dtos;
 using YourDateApp.Application.Queries.GetAllLikesForUsername;
 using YourDateApp.Application.Queries.GetAllMessages;
@@ -85,6 +86,14 @@ namespace YourDateApp.Controllers
 
             var messages = await _mediator
                 .Send(new GetAllMessagesQuery(getMessagesDto.UsernameFrom, getMessagesDto.UsernameTo));
+
+            if (messages != null && messages.Count > 0 && messages.Any(m => m.IsReceived == false))
+            {
+                // czyscimy wiadomości przychodzace do nas
+                // odwrotnie niż wyysła skrypt JS gdzie usernameFrom = nasz użytkownik
+                await _mediator.Send(new SetMessagesReceivedCommand(getMessagesDto.UsernameTo,
+                    getMessagesDto.UsernameFrom));
+            }
 
             return Ok(messages);
         }

@@ -6,5 +6,6 @@ namespace YourDateApp.Domain.Interfaces
     {
         Task AddMessage(Message message);
         Task<List<Message>> GetAllMessagesForChatId(int chatId);
+        Task SetMessageReceived(string usernameFrom, string usernameTo);
     }
 }
